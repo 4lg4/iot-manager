@@ -1,4 +1,6 @@
-const db = require('./db.json');
+const {get, set} = require('./db');
+
+const db = get();
 
 module.exports = [
   {
@@ -16,6 +18,8 @@ module.exports = [
         iotId: id,
         data: req.body,
       });
+
+      set(db, ()=> console.log('#### DEBUG ####, saved'));
 
       // if (err) {
       //   return res.status(500).send(err);
