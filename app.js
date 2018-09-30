@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const services = require('./services');
+const {token} = require('./env.json');
 const {version} = require('./package.json');
 const port = process.env.NODE_PORT || 3000;
 
@@ -9,6 +10,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
+  if (process.env.DEBUG) {
+    console.log('#### DEBUG ####', req.path, req.params, req.query, req.headers);
+  }
+
+  if (req.headers.token !== token) {
+    console.error('TOKEN REFUSED');
+    throw new Error('TOKEN REFUSED');
+  }
+
   if (process.env.NODE_ENV === 'development') {
     res.header('Access-Control-Allow-Origin', '*');
   }

@@ -11,16 +11,11 @@ module.exports = [
         return res.status(500).send('client id and iot id are required');
       }
 
-      if (typeof req.body === 'string') {
-        db.push({
-          clientId,
-          iotId: id,
-          message: req.body,
-        });
-      } else {
-        db.push(Object.assign({}, req.body, {clientId, iotId: id}));
-      }
-      // const { message } = req.body;
+      db.push({
+        clientId,
+        iotId: id,
+        data: req.body,
+      });
 
       // if (err) {
       //   return res.status(500).send(err);
